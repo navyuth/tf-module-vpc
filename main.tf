@@ -62,3 +62,11 @@ resource "aws_route_table" "private-route-table" {
     { Name = "${var.env}-${each.value["name"]}" }
   )
 }
+
+# Route table association {Hard part in terraform referring data}
+resource "aws_route_table_association" "private-association" {
+  for_each = var.private_subnets
+  subnet_id = lookup(lookup(aws_subnet.private_subnets, each.value["name"], null), "id", null)
+  #subnet_id      = aws_subnet.public_subnets[each.value["name"]].id
+  route_table_id = aws_route_table.private-route-table[each.value["name"]].id
+}
