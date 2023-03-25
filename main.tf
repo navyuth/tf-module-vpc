@@ -91,7 +91,6 @@ resource "aws_route_table_association" "public-association" {
 resource "aws_subnet" "private_subnets" {
   vpc_id = aws_vpc.main.id
 
-
   for_each = var.private_subnets
   cidr_block = each.value["cidr_block"]
   availability_zone = each.value["availability_zone"]
